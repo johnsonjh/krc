@@ -1,0 +1,25 @@
+    unify :- D A Turner, July 1982
+unify e x y, where e is an environment and x y are formulae, returns an environment
+derived from e by unifying x and y.  The representation of formulae is as follows
+    FORM ::= VAR | OPERATOR:FORM*
+    VAR ::= <string>
+    OPERATOR ::= <any discrete object>
+If the formulae cannot be unified "unify" returns the string "impossible";
+    unify e x y = unifier e (ult e x) (ult e y)
+    ult e (op:args) = op:map (ult e) args
+    ult e x = lookup e x (ult e)
+    lookup [] x f = x
+    lookup ([a,b]:e) x f = f b, x = a
+                         = lookup e x f
+    unifier e x y = e, x = y
+                  = [x,y]:e, var x & \contains x y
+                  = [y,x]:e, var y & \contains y x
+    unifier e (op:x) (op:y) = unifylist e x y, #x = #y
+    unifier e x y = "impossible"
+    contains a (op:x) = or (map (contains a) x)
+    contains a b = a = b
+    unifylist e [] [] = e
+    unifylist e (a:x) (b:y) = unifylist (unify e a b) x y, e \= "impossible"
+                            = "impossible"
+    var = string
+    e1 = unify [] "x" ["->",["A"],"x"]

@@ -1,0 +1,6 @@
+    hcf a b = hcf (a - b) b, a > b
+            = hcf a (b - a), a < b
+            = a, a = b
+    gcd a b = gcd (a % b) b, a >= b
+            = b, a = 0
+            = gcd b a

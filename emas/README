@@ -1,0 +1,10 @@
+These are the BCPL sources of EMAS KRC which I wrote in 1979-81 and used
+for teaching functional programming at the University of Kent in 1981
+and 1982.  For distribution terms see file COPYING in this directory.
+
+prelude and lib are smaller and larger versions of the prelude
+
+demo contains a random collection of small examples
+
+    David Turner
+    November 2015

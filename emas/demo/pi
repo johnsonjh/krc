@@ -1,0 +1,3 @@
+    pi = 4 * #{point;a,b<-[0..r];a * a + b * b <= rsq}
+    r = 10
+    rsq = r * r

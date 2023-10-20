@@ -1,0 +1,23 @@
+    closure' f s t = closure'' f s (mkset {a;f'<-f;a<-map f' t;\member s a})
+    closure'' f s t = [], t = []
+                    = t ++ closure' f (s ++ t) t
+    closure_under_laws f s = s ++ closure' f s s
+    equivclass x = closure_under_laws [rotate,invert,swap] [x]
+    hh n = {"H";i<-[1..n]}
+    invert (a:b) = b:a
+    invert x = x
+    output = map showpara [1..]
+    output' = layn (append (map paraffin [1..]))
+    para 1 = [[]]
+    para n = {b:a;i<-[1..n - 1];a<-paraf i;#a <= 2;b<-paraf (n - i)}
+    paraf = map para [1..]
+    paraffin = map rehydrogenate.removedups.paraf
+    rehydr x = map rehydr x ++ hh (3 - #x)
+    rehydrogenate x = map rehydr x ++ hh (4 - #x)
+    removedups [] = []
+    removedups (a:x) = a:{b<-removedups x;\member (equivclass a) b}
+    rotate (a:x) = x ++ [a]
+    rotate [] = []
+    showpara n = ["n = ",n,nl,layn (paraffin n)]
+    swap (a:b:x) = b:a:x
+    swap x = x

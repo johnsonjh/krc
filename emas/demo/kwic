@@ -1,0 +1,17 @@
+    addtofirst a (x:y) = (a:x):y
+    alphanum x = letter x | digit x
+    collect w (a:x) = collect (concat [w,a]) x, alphanum a
+                    = collect' w (a:x)
+    collect w [] = [w]
+    collect' w (a:x) = w:collect "" (a:x), alphanum a
+                     = collect' (concat [w,a]) x
+    collect' w [] = [w]
+    cshift x = {drop i x ++ take i x;i<-[1..#x]}
+    data = read "KRCDEMO_KWICDATA"
+    kwic x = sort (map concat (kwiclines x))
+    kwiclines x = {line;t<-retr_titles x;line<-cshift (retr_words t)}
+    output = kwic data
+    retr_titles (a:x) = [";"]:retr_titles x, a = nl
+                      = addtofirst a (retr_titles x)
+    retr_titles [] = []
+    retr_words x = collect "" x

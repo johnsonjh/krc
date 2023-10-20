@@ -1,0 +1,14 @@
+    solution :- a solution to the knight's tour problem, D A Turner, 13/8/82;
+    solution = print (gentour [startposns,[]])
+    startposns = {[i,j]|i,j<-[1..N]}
+    N = 5
+    gentour [m,t] = t, m = []
+                  = gentour (minimise freedom {[nextmoves (p:t),p:t]|p<-m})
+    freedom [m,t] = #m
+    nextmoves (p:t) = {p'|p'<-moves p;on p' & \member t p'}
+    on [i,j] = 1 <= i <= N & 1 <= j <= N
+    moves [i,j] = {[i + a,j + b]|a,b<-[-2..2];a * a + b * b = 5}
+    print t = display (changerep t)
+    changerep t i j = hd {rjustify 3 n|n<-[1..#t];t n = [i,j]}
+    display f = {map (f i) [1..N] ++ [nl]|i<-[1..N]} ++ [nl,nl]
+    minimise f x = hd {a|a<-x;f a = min (map f x)}

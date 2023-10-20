@@ -1,0 +1,11 @@
+    addqueen b = 1:b
+    alter (8:b) = alter b
+    alter (q:b) = q + 1:b
+    cantake q b i = q = b i | abs (q - b i) = i
+    empty = []
+    extend b = until safe alter (addqueen b)
+    full b = #b = 8
+    safe (q:b) = and (for 1 (#b) (not.cantake q b))
+    soln = until full extend empty
+    until f g x = x, f x
+                = until f g (g x)

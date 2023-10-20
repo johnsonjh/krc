@@ -1,0 +1,7 @@
+    cart [] = [[]]
+    cart (a:x) = cp' a (cart x)
+    cp [] y = []
+    cp (a:x) y = map (pair a) y ++ cp x y
+    cp' [] y = []
+    cp' (a:x) y = map (cons a) y ++ cp' x y
+    pair a b = [a,b]

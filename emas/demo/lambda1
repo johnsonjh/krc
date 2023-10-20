@@ -1,0 +1,40 @@
+    nf :- reduces lambda expressions to normal form.  The representation of lambda expressions
+is as follows:
+        E ::= VAR | [E,E] | ["lambda",VAR,E]
+        VAR ::= <string>
+This script is based on my unsuccessful script of 28 July which attempted to do normal
+graph reduction - D A Turner, 10 August 1982;
+    nf e = e, var e
+    nf [e1,e2] = apply (nf e1) e2
+    nf [lambda,x,e] = [lambda,x,nf e]
+    apply [lambda,x,e1] e2 = nf (subst x e2 e1)
+    apply e1 e2 = [e1,e2]
+    subst :- subst x a e = a version of e in which every free occurence of x has
+been replaced by "a";
+    subst x a e = a, e = x
+                = e, var e
+    subst x a [e1,e2] = [subst x a e1,subst x a e2]
+    subst x a [lambda,y,e] = [lambda,y,e], y = x
+                           = subst x a (alphaconvert [lambda,y,e] (prime y)), member (free a) y
+                           = [lambda,y,subst x a e]
+    alphaconvert [lambda,x,e] y = [lambda,y,subst x y e [y]], \member (free e) y
+                                = alphaconvert [lambda,x,e] (prime y)
+    prime x = concat [x,"'"]
+    var = string
+    free e = [e], var e
+    free [e1,e2] = union [free e1,free e2]
+    free [lambda,x,e] = free e -- [x]
+    lambda = "lambda"
+    l x e = [lambda,x,e]
+    a = "a"
+    b = "b"
+    c = "c"
+    d = "d"
+    i = l a a
+    k = l a (l b a)
+    n = l a [a,a]
+    hole = [n,n]
+    it = nf [[k,i],hole]
+    s = l a (l b (l c [[a,c],[b,c]]))
+    y = l h [n,l a [h,[a,a]]]
+    h = "h"

@@ -1,0 +1,4 @@
+    R = mklis (mix (map (':' 0) R) (map (':' 1) R))
+    mklis x = hd x:mklis (tl x)
+    f n = take 8 (R n)
+    mix x (b:y) = b:mix y x

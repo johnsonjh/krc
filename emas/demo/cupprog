@@ -1,0 +1,18 @@
+    output = ["winner = team ",winner tree,nl,margininfo (maxmargin tree)]
+    tree = buildtree (table 1)
+    table = grouptriples (values (read "cupdata"))
+    grouptriples (a:",":b:",":c:x) = [a,b,c]:grouptriples x
+    grouptriples [] = []
+    buildtree [left,right,val] = val, left = right = -1
+                               = [buildtree (table left),buildtree (table right),val]
+    winner [left,right,val] = winner left, val > 0
+                            = winner right, val < 0
+    winner team = team
+    maxmargin [left,right,val] = max [abs val,maxmargin left,maxmargin right]
+    maxmargin team = 0
+    gamesofmargin m [left,right,val] = foo m val (winner left) (winner right) ++ gamesofmargin m left ++ gamesofmargin m right
+    gamesofmargin m team = []
+    foo m val team1 team2 = [[team1,team2]], m = val
+                          = [[team2,team1]], m = -val
+                          = []
+    margininfo m = ["greatest margin = ",m,", achieved by ",{["team ",x 1," over ","team ",x 2,";"]|x<-gamesofmargin m tree}]

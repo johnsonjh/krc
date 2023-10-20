@@ -1,0 +1,18 @@
+    s0 = pairs [2..100]
+    s1 = filter ('\'.both_prime) s0
+    s2 = filter sum_has_no_prime_partition s1
+    s3 = filter ('\'.unique_sum_in (map sum s2)) s2
+    s4 = filter (unique_product_in (map product s3)) s3
+    s5 = filter (unique_sum_in (map sum s4)) s4
+    both_prime [a,b] = member primes a & member primes b
+    p1 = [2,3,5,7,11,13,17,19,23,29,31,37]
+    p2 = [41,43,47,53,59,61,67,71,73,79,83,97]
+    pair a b = [a,b]
+    pairs [] = []
+    pairs (a:x) = map (pair a) (a:x) ++ pairs x
+    prime_sums = mkset (map sum (pairs primes))
+    primes = p1 ++ p2
+    singleton x = x = [] | tl x \= []
+    sum_has_no_prime_partition [a,b] = \member prime_sums (a + b)
+    unique_product_in x [a,b] = singleton (filter ('=' (a * b)) x)
+    unique_sum_in x [a,b] = singleton (filter ('=' (a + b)) x)

@@ -1,0 +1,6 @@
+    f = layn.partitions
+    f' = layn.partitions'
+    partitions 0 = [[]]
+    partitions n = {i:p;i<-[1..n];p<-partitions (n - i)}
+    partitions' 0 = [[]]
+    partitions' n = {i:p;i<-[1..n];p<-partitions' (n - i);p = [] | i <= hd p}

@@ -1,0 +1,6 @@
+    answer = expansion (2:ones)
+    expansion (d:f) = d:expansion (normalise 2 (0:{10 * a;a<-f}))
+    normalise c (d:e:f) = normalise' c d e (normalise (c + 1) (e:f))
+    normalise' c d e x = d + e / c:hd x % c:tl x, e % c + 9 < c
+                             = d + hd x / c:hd x % c:tl x
+    ones = 1:ones

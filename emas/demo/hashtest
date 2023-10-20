@@ -1,0 +1,15 @@
+    F 1 = 1
+    F N = F (N - 1)
+    FAC 0 = 1
+    FAC N = N * FAC (N - 1)
+    FIB 1 = 1
+    FIB 2 = 1
+    FIB N = FIB (N - 1) + FIB (N - 2)
+    FR A B F = [], A > B
+             = F A:FR (A + 1) B F
+    HANOI 0 A B C = []
+    HANOI N A B C = [HANOI (N - 1) C B A,MOVE A B,HANOI (N - 1) C B A]
+    LINE N = ["FACTORIAL",N,"IS",FAC N]
+    MOVE A B = ["MOVE A DISC FROM",A,"TO",B]
+    SUC X = X + 1
+    TWICE F X = F (F X)

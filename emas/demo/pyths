@@ -1,0 +1,2 @@
+    pyths = append (map soln [1..])
+    soln n = {[a,b,n];a<-[1..n - 1];b<-[a..n - 1];a * a + b * b = n * n}

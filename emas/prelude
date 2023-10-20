@@ -1,0 +1,148 @@
+    abs x = x, x >= 0
+
+          = -x
+
+    and = fold '&' "TRUE"
+
+    char :- predicate, true on strings of size one, false
+
+            otherwise (defined in machine code);
+
+    code :- converts a character to its ascii code number
+
+            (defined in machine code);
+
+    concat :- takes a list of strings and concatenates them
+
+            into one big string (defined in machine code);
+
+    decode :- converts an integer to the character of that
+
+              ascii number (defined in machine code);
+
+    explode :- explodes a string into a list of its
+
+       constituent characters (defined in machine code);
+
+    filter f x = {a|a<-x;f a}
+
+    fold op s [] = s
+
+    fold op s (a:x) = op a (fold op s x)
+
+    function :- type testing predicate (defined in m/c code);
+
+    hd (a:x) = a
+
+    interleave :- merges two lists into one by taking members from them
+
+                  alternately (- needed by the system to implement multi-
+
+                  generator ZF expressions);
+
+    interleave (a:x) y = a:interleave y x
+
+    interleave [] y = y
+
+    lay [] = []
+
+    lay (a:x) = show a:nl:lay x
+
+    layn x = layn' 1 x
+
+    layn' n [] = []
+
+    layn' n (a:x) = n:")  ":show a:nl:layn' (n + 1) x
+
+    list :- type testing predicate (defined in machine code);
+
+    listdiff :- defines the action of the "--" operator;
+
+    listdiff [] y = []
+
+    listdiff x [] = x
+
+    listdiff (a:x) (b:y) = listdiff x y, a = b
+
+                         = listdiff (a:listdiff x [b]) y
+
+    map f [] = []
+
+    map f (a:x) = f a:map f x
+
+    member [] a = "FALSE"
+
+    member (a:x) b = a = b | member x b
+
+    neg x = -x
+
+    nl = decode 10
+
+    np = decode 12
+
+    number :- type testing predicate (defined in machine code);
+
+    or = fold '|' "FALSE"
+
+    printwidth :- printwidth x, for any x, gives width of x on
+
+          printing (with "!") (defined in machine code);
+
+    product = fold '*' 1
+
+    quote = decode 34
+
+    read :- takes a file or device name and returns a list of 
+
+            characters (defined in machine code);
+
+    reverse [] = []
+
+    reverse (a:x) = reverse x ++ [a]
+
+    show x = "nl", x = nl
+
+           = "np", x = np
+
+           = "tab", x = tab
+
+           = "vt", x = vt
+
+           = [quote,x,quote], string x
+
+           = ["[",show' x,"]"], list x
+
+           = x
+
+    show' [] = []
+
+    show' [a] = [show a]
+
+    show' (a:x) = show a:",":show' x
+
+    spaces 0 = []
+
+    spaces n = " ":spaces (n - 1)
+
+    string :- type testing predicate (defined in machine
+
+                                          code);
+
+    sum = fold '+' 0
+
+    tab = decode 9
+
+    tl (a:x) = x
+
+    vt = decode 11
+
+    write :- used to mark items to be sent to a file on
+
+             output, thus:
+
+                 write "filename" x
+
+             where x is any KRC data item.
+
+              (Defined in machine code);
+

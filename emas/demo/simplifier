@@ -1,0 +1,12 @@
+    simplify [op,a,b] = simp' [op,simplify a,simplify b], symmetric op
+                      = simp [op,simplify a,simplify b]
+    simplify [fun,a] = simp [fun,simplify a]
+    simplify x = x
+    simp' x = simp'' x (simp x)
+    simp'' x y = simp (converse x), x = y
+               = x
+    converse [op,a,b] = [op,b,a]
+    symmetric = member ["+","*"]
+    simp ["+",a,0] = a
+    simp ["log",0] = 0
+    simp ["*",a,1] = a

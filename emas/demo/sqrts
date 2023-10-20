@@ -1,0 +1,4 @@
+    f x y = [y], y * y <= x < (y + 1) * (y + 1)
+          = y:f x ((y + x / y) / 2)
+    sqrt x = summarise (f x 1)
+    summarise l = [#l - 1," STEPS ",show l,nl]

@@ -1,0 +1,8 @@
+    hamset = mkset {2 ** a * 3 ** b |a,b<-[0..]}
+    ham = 1:merge (mult 2 ham)(mult 3 ham)
+    mult n x = {a * n|a<-x}
+    merge (a:x) (b:y) = a:merge x (b:y), a < b
+                       = b:merge (a:x) y, a > b
+                       = a:merge x y, a = b
+    merge x [] = x
+    merge [] y = y

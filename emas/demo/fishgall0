@@ -1,0 +1,15 @@
+    data = [[1,2],[3,3]]
+    equiv = intersection {r|r<-eqrels;includes r data}
+    includes x [] = true
+    includes x (b:y) = member x b & includes x y
+    eqrels = {r|r<-rels;sym r & refl r & trans r}
+    rels = powerset (csq (carrier data))
+    carrier r = mkset (append r)
+    csq x = cp x x
+    cp x y = {[a,b]|a<-x;b<-y}
+    sym r = includes r (inverse r)
+    inverse r = map invert r
+    invert [a,b] = [b,a]
+    refl r = includes r {[a,a]|a<-carrier r}
+    trans r = includes r (join r r)
+    join s t = {[x 1,y 2]|x<-s;y<-t;x 2 = y 1}

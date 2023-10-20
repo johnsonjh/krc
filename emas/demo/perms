@@ -1,0 +1,4 @@
+    perms [] = [[]]
+    perms x = {a:p;a<-x;p<-perms (sub1 a x)}
+    sub1 a (b:x) = x, a = b
+                 = b:sub1 a x

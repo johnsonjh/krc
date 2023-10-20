@@ -1,0 +1,6 @@
+    calculator = go (read ".IN")
+    f (a:x) = f x, a = nl | a = sp
+            = [], a = "q" | a = "Q"
+            = 2 * digitval a:nl:go x
+    go x = prompt:vt:f x
+    prompt = "data:"

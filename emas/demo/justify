@@ -1,0 +1,19 @@
+    reformat :- reformat width text carries out right-justification of text (a list of chars);
+    reformat width = mklines width.cleanup
+    cleanup (c:in) = cleanup in, c = sp | c = nl
+    cleanup in = getword in
+    getword (c:in) = c:getword in, sp \= c \= nl
+                   = sp:cleanup in, cleanup in \= []
+    getword in = []
+    mklines width x = x ++ [nl], #x <= width
+                    = hd {just width (take (n - 1) x) ++ [nl] ++ mklines width (drop n x)|n<-[width + 1,width..];x n = sp}
+    just :- just n s, where s is a list of chars with single spaces between words, returns a list padded out to width
+            n with extra internal spaces;
+    just n s = just' (n - #s) (#filter ('=' sp) s) s
+    just' w p s = s, w <= 0
+                = insertspace (w / p + 1) (w % p) s
+    insertspace x i (c:s) = spaces (x + 1) ++ insertspace x (i - 1) s, c = sp & i > 0
+                          = spaces x ++ insertspace x 0 s, c = sp
+                          = c:insertspace x i s
+    insertspace x i [] = []
+    data = read "krcdemo_text"

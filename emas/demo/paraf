@@ -1,0 +1,27 @@
+    canonical [a,"H","H","H"] = true
+    canonical x = false
+    closure' f s t = closure'' f s (mkset {a;f'<-f;a<-map f' t;\member s a})
+    closure'' f s t = [], t = []
+                    = t ++ closure' f (s ++ t) t
+    closure_under_laws f s = s ++ closure' f s s
+    equiv a = member (filter canonical (equivclass a))
+    equivclass x = closure_under_laws [rotate,invert,swap] [x]
+    f = layn.equivclass
+    h = "H"
+    i x = x
+    invert [[a,b,c],d,e,f] = [a,b,c,[d,e,f]]
+    invert x = x
+    m = [h,h,h]
+    output = map showpara [1..]
+    para 0 = [h]
+    para n = paralist n
+    para' n = {[a,b,c];i<-[0..n - 1];j<-[0..n - 1 - i];a<-para i;b<-para j;c<-para (n - 1 - i - j)}
+    paraffin n = removedups {[x,h,h,h];x<-para (n - 1)}, n >= 1
+    paralist = map para' [1..]
+    removedups [] = []
+    removedups (a:x) = a:filter (not.equiv a) (removedups x)
+    rotate (a:x) = x ++ [a]
+    rotate "H" = "H"
+    showpara n = ["n = ",n,nl,layn (paraffin n)]
+    swap (a:b:x) = b:a:x
+    swap x = x

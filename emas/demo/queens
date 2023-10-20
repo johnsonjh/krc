@@ -1,0 +1,4 @@
+    checks q b i = q = b i | abs (q - b i) = i
+    queens 0 = [[]]
+    queens n = {q:b|b<-queens (n - 1);q<-[1..8];safe q b}
+    safe q b = and {\checks q b i|i<-[1..#b]}

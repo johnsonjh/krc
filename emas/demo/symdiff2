@@ -1,0 +1,287 @@
+    SYMDIFF :- SYMBOLIC DIFFERENTIATION AND SIMPLIFICATION SYSTEM
+                             G. VALLABH                   /82;
+    analyse :- the input function for a computer algebra package
+    "analyse" takes a formula (as a string) and returns a tree (if
+    successful) or else the string "error".  The syntax accepted by
+    "analyse" is as follows:
+        EXP ::= EXP + EXP1 | EXP - EXP1 | EXP1
+        EXP1 ::= -EXP1 | EXP2
+        EXP2 ::= EXP2 * EXP3 | EXP2 / EXP3 | EXP3
+        EXP3 ::= EXP4 ** EXP3 | EXP4 
+        EXP4 ::= FUNCTION EXP4 | ( EXP ) | VAR | NUM
+        VAR ::= <any single letter>
+        NUM ::= <any sequence of digits>
+        FUNCTION ::= <as per the list "funs">
+    Note that infix operators are generally left-associative in the above
+    syntax except for "^" which is right-associative.
+    The function "analyse" will also accept implied multiplications
+    e.g.    ab(c-d)
+    is read as    a*b*(c-d);
+    analyse x = banalyse (explode x)
+    banalyse :- is the analyse funtion for batch mode;
+    banalyse x = shunt [] [] (fixops (tokens x))
+    shunt :- uses the "railway siding" algorithm of Dijkstra
+              shunt operator_stack operand_stack token_list => tree;
+    shunt rators rands (a:x) = shunt rators (a:rands) x, operand a
+    shunt ("(":rators) rands (")":x) = shunt rators rands x
+    shunt rators rands ("(":x) = shunt ("(":rators) rands x
+    shunt (op:rators) rands (op':x) = shunt rators (push op rands) (op':x), displaced (prio op) (prio op')
+    shunt rators rands (op:x) = shunt (op:rators) rands x, operator op
+    shunt (op:rators) rands [] = shunt rators (push op rands) [], op \= "("
+    shunt [] [rand] [] = rand
+    shunt x y z = ["**ERROR**",nl,"syntax error - rewrite expression",nl]
+    push "neg" (a:rands) = mult (-1) a:rands
+    push op (a:rands) = reduce [op,a]:rands, member funs op
+    push op (b:a:rands) = plus a b:rands, op = "+"
+                        = plus a (mult (-1) b):rands, op = "-"
+                        = mult a b:rands, op = "*"
+                        = mult a (power b (-1)):rands, op = "/"
+                        = power a b:rands, op = "^"
+    push op other = ["**ERROR**",nl,"operator clash - insufficient parenthesis",nl]
+    displaced prio1 prio2 = prio1 > prio2 | prio1 = prio2 & leftassoc prio1
+    operand a = letter a | number a
+    operator a = prio a > -1
+    prio :- defines the priorities of all the operators (and assigns
+         a priority of -1 to non-operators).  To add new operators
+         to the syntax, simply alter "prio";
+    prio x = 0, x = "+" | x = "-"
+           = 1, x = "neg"
+           = 2, x = "*" | x = "/"
+           = 3, x = "^"
+           = 4, member funs x
+           = -1
+    leftassoc prio = prio = 0 | prio = 2
+    funs :- to add new function symbols to the syntax, simply alter the
+          definition of "funs";
+    funs = ["sin","cos","tan","exp","log","sqrt"]
+    tokens :- performs lexical analysis;
+    tokens (a:x) = tokens x, a = sp | a = nl
+                 = collectnum (digitval a) x, digit a
+                 = collectname a x, letter a
+    tokens ("*":"*":x) = "^":tokens x
+    tokens (a:x) = a:tokens x
+    tokens [] = []
+    collectnum n (a:x) = collectnum (10 * n + digitval a) x, digit a
+    collectnum n x = n:tokens x
+    collectname n (a:x) = collectname (concat [n,a]) x, letter a
+    collectname n x = n:tokens x, member funs n
+                    = explode n ++ tokens x
+    fixops :- inserts implied multiplication signs, also converts unary
+          minus to "neg" so the analyser can distinguish it from infix
+          minus (the analyser converts it back to "-" when building the
+          tree - see "push");
+    fixops ("-":x) = "neg":fixops' x
+    fixops x = fixops' x
+    fixops' (a:b:x) = a:"*":fixops' (b:x), (operand a | a = ")") & (operand b | b = "(" | member funs b)
+    fixops' (a:"-":x) = a:fixops' ("-":x), operand a | a = ")"
+                      = a:fixops' ("neg":x)
+    fixops' (a:x) = a:fixops' x
+    fixops' [] = []
+    diff :- performs differentiation;
+    diff x ("**ERROR**":mess) = "**ERROR**":mess
+    diff x [] = []
+    diff x ("+":rands) = refine ("+":sort' (doplus {diff x a|a<-rands}))
+    diff x ("*":rands) = refine ("+":sort' (doplus {mult (diff x a) (refine ("*":minus' [] a rands))|a<-rands}))
+    diff x ["^",a,b] = mult (plus (mult (diff x b) ["log",a]) (mult b (diff x ["log",a]))) ["^",a,b]
+    diff x ["sin",a] = mult ["cos",a] (diff x a)
+    diff x ["cos",a] = mult (mult (-1) ["sin",a]) (diff x a)
+    diff x ["tan",a] = mult [power "sec" 2,a] (diff x a)
+    diff x ["log",a] = mult (diff x a) (power a (-1))
+    diff x ["exp",a] = mult ["exp",a] (diff x a)
+    diff x ["sqrt",a] = diff x ["^",a,power 2 (-1)]
+    diff x n = 1, n = x
+             = 0
+    plus :- The plus 'contractor' function perform all numerical
+         addition and algebriac reductions in building the
+         internal form. Here "+" is a n-ary operator;
+    plus a b = a + b, number a & number b
+             = plus b a, number b
+    plus 0 a = a
+    plus a a = mult 2 a
+    plus ("+":l) ("+":m) = refine ("+":sort' (doplus (l ++ m)))
+    plus ("+":l) p = refine ("+":sort' (doplus (l ++ [p])))
+    plus p ("+":l) = refine ("+":sort' (doplus ([p] ++ l)))
+    plus ("*":p:l) ("*":p':m) = mult (p + p') ("*":l), number p & number p' & l = m & def l
+    plus ("*":p:l) ("*":m) = mult (p + 1) ("*":l), number p & l = m & def l
+    plus ("*":l) ("*":p:m) = mult (p + 1) ("*":l), number p & l = m & def l
+    plus p ["*",q,p] = mult (q + 1) p, number q & def p
+    plus ["*",q,p] p = mult (q + 1) p, number q & def p
+    plus a b = ["+",a,b]
+    doplus :- performs a linear search such that like operands
+              and operands that will cancel are combined.
+          eg plus ["+","a","b"] ["+","a","c"] is reduced to
+                  ["+",["*",2,"a"],"b","c"];
+    doplus [] = []
+    doplus (a:rands) = doplus' a (doplus rands)
+    doplus' a [] = [a]
+    doplus' a (b:rands) = b:doplus' a rands, ifplus (plus a b)
+                        = doplus' (plus a b) rands
+    ifplus (op:rands) = "TRUE", op = "+"
+                      = "FALSE"
+    ifplus a = "FALSE"
+    mult :- The mult 'contractor' function performs all numerical 
+         and algebriac reductions in building the internal form.
+         "*" is an n-ary operator;
+    mult a b = a * b, number a & number b
+             = mult b a, number b
+    mult 0 a = 0, def a
+    mult 1 a = a
+    mult a a = power a 2
+    mult ("*":l) ("*":m) = refine ("*":sort' (domult (l ++ m)))
+    mult ("*":l) p = refine ("*":sort' (domult ([p] ++ l)))
+    mult p ("*":l) = refine ("*":sort' (domult ([p] ++ l)))
+    mult ("+":l) ("+":m) = refine ("+":sort' (doplus {mult p q|p<-l;q<-m}))
+    mult ("+":l) p = refine ("+":sort' (doplus {mult p a|a<-l}))
+    mult p ("+":l) = refine ("+":sort' (doplus {mult p a|a<-l}))
+    mult ["^",p,q] ["^",p,r] = power p (plus q r), def p
+    mult p ["^",p,q] = power p (plus 1 q), def p
+    mult ["^",p,q] p = power p (plus 1 q), def p
+    mult a b = "*":sort' [a,b]
+    domult :- performs a linear search such that like
+              operands and operands that will cancel
+              are combined;
+    domult [] = []
+    domult (a:rands) = domult' a (domult rands)
+    domult' a [] = [], a = 1
+                 = [a]
+    domult' a (b:rands) = b:domult' a rands, ifmult (mult a b)
+                        = domult' (mult a b) rands
+    ifmult (op:rands) = "TRUE", op = "*"
+                      = "FALSE"
+    ifmult a = "FALSE"
+    power :- The power 'contractor' function performs all 
+          algebriac reductions in building the internal
+          form. "^" is a binary operator. Mathematically
+          undefined expressions are correctly handled;
+    power 0 0 = power "##" 0
+    power 0 a = 0, pos a & def a
+              = power "##" a, def a
+              = ["^",0,a]
+    power a 0 = 1, def a
+              = ["^",a,0]
+    power 1 a = 1, def a
+              = ["^",1,a]
+    power a 1 = a
+    power ["^",p,q] r = power p (mult q r)
+    power r ["^",p,q] = power r (mult p q)
+    power ("*":l) p = refine ("*":domult {power a p|a<-l})
+    power a b = power (mult (-1) a) b, (not.pos) a & number b & b % 2 = 0
+              = ["^",a,b]
+    reduce :- performs "natural" transformations to functions;
+    reduce ["sin",0] = 0
+    reduce ["cos",0] = 1
+    reduce ["tan",0] = 0
+    reduce ["sin",a] = mult (-1) ["sin",mult (-1) a], (not.pos) a
+    reduce ["cos",a] = ["cos",mult (-1) a], (not.pos) a
+    reduce ["tan",a] = mult (-1) ["tan",mult (-1) a], (not.pos) a
+    reduce ["log",0] = ["log","##"]
+    reduce ["log",1] = 0
+    reduce ["exp",0] = 1
+    reduce ["log",["exp",a]] = a
+    reduce ["exp",["log",a]] = a
+    reduce [op,a] = [op,a]
+    sort' :- is a very general sorting routine. It assists
+          in making the obvious reductions.
+          eg. plus ["*","a","b","c"] ["*","a","c","b"]
+               ==> ["*",2,"a","b","c"];
+    sort' [a] = [a]
+    sort' (a:l) = sort'' a (sort' l)
+    sort'' a [] = [a]
+    sort'' a (b:m) = b:sort'' a m, greater a b
+                   = a:sort'' b m
+    greater [] [] = "TRUE"
+    greater [] b = "FALSE"
+    greater a [] = "TRUE"
+    greater (a:l) (b:m) = greater l m, a = b
+    greater (a:l) b = "TRUE"
+    greater a (b:m) = "FALSE"
+    greater a b = "FALSE", number a
+                = "TRUE", number b
+                = "TRUE", a > b
+                = "FALSE"
+    output :- transforms the internal form to a readable form;
+    output ("**ERROR**":mess) = "**ERROR**":mess
+    output ("+":rands) = fitminus [] [] rands
+    output ("*":rands) = "-":output (mult (-1) ("*":rands)), (not.pos) ("*":rands)
+                       = fitdiv [] [] rands
+    output ["^",a,b] = changeform "/" [1,power a (mult (-1) b)], (not.pos) b
+                     = changeform "^" [a,b]
+    output ["/",a,b] = changeform "/" [a,b]
+    output [op,a] = [op,"(",output a,")"]
+    output a = a
+    fitminus :- separates +ve and -ve operands for outputing.
+            eg.   ["+","a",["*",-1,"b"],["*",-1,"c"]]
+               => ["+","a",["-","b","c"]];
+    fitminus rands [] [] = changeform " + " rands
+    fitminus [] rands [] = changeform " - " rands
+    fitminus poz neg [] = changeform " + " (poz ++ ["-":neg])
+    fitminus poz neg (a:rands) = fitminus (poz ++ [a]) neg rands, pos a
+                               = fitminus poz (neg ++ [mult (-1) a]) rands
+    fitdiv :- separates numerators and denominators for outputing.
+          eg.   ["*","a","b",["^","p","q"],["^","c",-1]]
+             => ["/",["*","a","b",["^","p","q"]],"c"];
+    fitdiv noom denom (["^",p,q]:rands) = fitdiv noom (denom ++ [power p (mult (-1) q)]) rands, (not.pos) q
+    fitdiv noom denom (p:rands) = fitdiv (refit (noom ++ [p])) denom rands
+    fitdiv rands [] [] = changeform "*" rands
+    fitdiv [] rands [] = changeform "/" [1,refine ("*":rands)]
+    fitdiv noom denom [] = changeform "/" [refine ("*":sort' (domult noom)),refine ("*":sort' (domult denom))]
+    refit (("*":rands'):rands) = rands':rands
+    refit (a:rands) = a:rands
+    changeform :- creates the output format;
+    changeform op [a] = [output a]
+    changeform " + " (a:("-":l):rands) = output a:" - ":changeform " - " l:rands
+    changeform op [a,b] = ["(",output a,")",op,"(",output b,")"], (op = "^" | op = "/") & expr a & expr b
+                        = [output a,op,"(",output b,")"], (op = "^" | op = "/") & expr b
+                        = ["(",output a,")",op,output b], (op = "^" | op = "/") & expr a
+                        = [output a,op,output b], op = "^" | op = "/"
+    changeform op (a:rands) = output a:op:changeform op rands
+    pos (op:a:l) = "FALSE", op = "*" & number a & a < 0
+                 = "TRUE"
+    pos m = "FALSE", number m & m < 0
+          = "TRUE"
+    expr :- identifies (sub) expressions;
+    expr (op:rands) = "TRUE", op = "-" | op = "+" | op = "*" | op = "/" | op = "^"
+                    = "FALSE"
+    expr a = "FALSE"
+    expr' (op:rands) = "TRUE", op = "-" | op = "+" | op = "*" | op = "/" | op = "^" | member funs op
+                     = "FALSE"
+    expr' a = "FALSE"
+    refine :- removes redundant operators created
+           during some transfomations;
+    refine [op,z] = refine z, op = "+" | op = "*"
+    refine [z] = refine z
+    refine z = z
+    def :- checks whether expression is defined
+        ie.expression does not contain an un
+        -defined quantity;
+    def (a:l) = \member (append (a:l)) "##"
+    def a = "TRUE"
+    append [] = []
+    append (x:xx) = x ++ append xx, expr' x
+                  = x:append xx
+    minus' :- performs the list minus operation.
+          eg. minus' ["+","a","c","b"] "c"
+                 =>  ["+","a","b"];
+    minus' temp a (a':rands) = minus' (a':temp) a rands, a \= a'
+                             = temp ++ rands
+    letter x = uppercase x | lowercase x
+    uppercase x = char x & "A" <= x <= "Z"
+    lowercase x = char x & "a" <= x <= "z"
+    digit x = char x & "0" <= x <= "9"
+    digitval x = code x - code "0", digit x
+    not x = \x
+    sp = " "
+    runx x input = output (diff x (analyse input))
+    run input = runx "x" input
+    simplify input = output (analyse input)
+    brunx x = getlnbr x [] (read "binput")
+    brun = brunx "x"
+    bsimplify = getlnbs [] (read "binput")
+    getlnbs :- separates expressions in input file for appropriate action;
+    getlnbs y [] = []
+    getlnbs y (a:x) = getlnbs (y ++ [a]) x, a \= nl
+                    = output (banalyse y):nl:getlnbs [] x
+    getlnbr :- separates expressions in input file for appropriate action;
+    getlnbr x y [] = []
+    getlnbr x y (a:rest) = getlnbr x (y ++ [a]) rest, a \= nl
+                         = output (diff x (banalyse y)):nl:getlnbr x [] rest

@@ -1,0 +1,22 @@
+    closure' f s t = closure'' f s (mkset {a;f'<-f;a<-map f' t;\member s a})
+    closure'' f s t = [], t = []
+                    = t ++ closure' f (s ++ t) t
+    closure_under_laws f s = s ++ closure' f s s
+    equiv a = member (equivclass a)
+    equiv2 a = member (closure_under_laws [rotate,swap] [a])
+    equivclass x = closure_under_laws [rotate,invert,swap] [x]
+    h = "H"
+    invert [[a,b,c],d,e,f] = [a,b,c,[d,e,f]]
+    invert x = x
+    output = layn (append (map paraffin [1..]))
+    para 0 = [h]
+    para n = paralist n
+    para' n = {[a,b,c];i<-[0..n - 1];j<-[0..n - 1 - i];a<-para i;b<-para j;c<-para (n - 1 - i - j)}
+    paraffin n = quotient equiv {[x,h,h,h];x<-para (n - 1)}
+    paralist = map (quotient equiv2.para') [1..]
+    quotient f (a:x) = a:filter (not.f a) (quotient f x)
+    quotient f [] = []
+    rotate (a:x) = x ++ [a]
+    rotate "H" = "H"
+    swap (a:b:x) = b:a:x
+    swap x = x

@@ -1,0 +1,6 @@
+    answer = expansion (2:ones)
+    carry c (d:e:x) = d + e / c:e % c:x
+    expansion (d:f) = d:expansion (normalise 2 (0:{10 * a;a<-f}))
+    normalise c (d:e:x) = d:normalise (c + 1) (e:x), e + 9 < c
+                        = carry c (d:normalise (c + 1) (e:x))
+    ones = 1:ones

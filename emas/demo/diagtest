@@ -1,0 +1,7 @@
+    interleave (a:x) y = a:interleave y x
+    interleave [] y = y
+    coalesce = fold interleave []
+    f i = {[i,j]|j<-[1..]}
+    x = coalesce (map f [1..])
+    p i = {a|a<-x;a 1 = i}
+    q i = {a|a<-x;a 2 = i}

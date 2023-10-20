@@ -1,0 +1,5 @@
+    d n = [], n = 0
+        = d (n / 2):d (n - 1)
+    sze [] = 1
+    sze (a:b) = sze a + sze b + 1
+    x = d 30

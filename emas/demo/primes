@@ -1,0 +1,2 @@
+    primes = sieve [2..]
+    sieve (p:x) = p:sieve {n<-x;n % p > 0}

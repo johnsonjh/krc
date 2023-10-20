@@ -1,0 +1,20 @@
+    day :- finds weekday of given date, from reference date of 1st Jan 1982
+known to be Friday (=day 4);
+    day d m y = "impossible date", \valid d m y
+              = dayname (4 + distance 1 1 1982 d m y)
+    leap y = y % 400 = 0, y % 100 = 0
+           = y % 4 = 0
+    days m y = 30, member [9,4,6,11] m
+    days 2 y = 29, leap y
+             = 28
+    days m y = 31
+    valid d m y = 1 <= m <= 12 & 1 <= d <= days m y
+    before d m y d' m' y' = y < y' | y = y' & m < m' | y = y' & m = m' & d < d'
+    distance d m y d' m' y' = dist d m y d' m' y', before d m y d' m' y'
+                            = -dist d' m' y' d m y
+    dayno d m y = sum {days m' y|m'<-[1..m - 1]} + d
+    length y = 366, leap y
+             = 365
+    dist d m y d' m' y = dayno d' m' y - dayno d m y
+    dist d m y d' m' y' = sum {length y''|y''<-[y..y' - 1]} + dayno d' m' y' - dayno d m y,y<y'
+    dayname d = ["mon","tue","wed","thu","fri","sat","sun"] (abs (d % 7) + 1)

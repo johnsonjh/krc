@@ -1,0 +1,10 @@
+    fac 0 = 1
+    fac n = n * fac (n - 1)
+    fr a b f = [], a > b
+             = f a:fr (a + 1) b f
+    hanoi 0 a b c = []
+    hanoi n a b c = [hanoi (n - 1) c b a,move a b,hanoi (n - 1) c b a]
+    line n = ["FACTORIAL",n,"IS",fac n]
+    move a b = ["MOVE A DISC FROM",a,"TO",b]
+    suc x = x + 1
+    twice f x = f (f x)

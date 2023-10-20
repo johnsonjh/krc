@@ -1,0 +1,5 @@
+    squash n x = squash' n 1 x
+    squash' n i (a:x) = nl:squash n x, a = nl
+                      = nl:squash n (a:x), i > n
+                      = a:squash' n (i + 1) x
+    squash' n i [] = []

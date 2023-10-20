@@ -1,0 +1,14 @@
+    sort [] = []
+    sort [a] = [a]
+    sort x = merge' (split x)
+    merge' [x,y] = merge (sort x) (sort y)
+    merge (a:x) (b:y) = a:merge x (b:y), a <= b
+                      = b:merge (a:x) y
+    merge [] y = y
+    merge x [] = x
+    split (a:x) = splice a (split' x)
+    split [] = [[],[]]
+    split' (a:x) = splice' a (split x)
+    split' [] = [[],[]]
+    splice a [x,y] = [a:x,y]
+    splice' a [x,y] = [x,a:y]

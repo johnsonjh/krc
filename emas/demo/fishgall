@@ -1,0 +1,6 @@
+    data = [[1,3],[3,5],[1,7],[2,6],[6,8],[8,4]]
+    equiv a b = rep a = rep b
+    genrep [] = I
+    genrep ([a,b]:x) = identify a b (genrep x)
+    identify a b f = update I (f a) (f b).f
+    rep = genrep data

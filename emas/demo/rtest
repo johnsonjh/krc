@@ -1,0 +1,2 @@
+    R = mklis {d:r|d<-[0,1];r<-R}
+    mklis x = hd x:mklis (tl x)

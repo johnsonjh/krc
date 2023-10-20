@@ -1,0 +1,33 @@
+    values :- values takes a list of characters (for example as obtained by reading a file) 
+and returns the list of KRC data items represented by it - the data items
+recognised include numbers, strings and tuples - strings need not have
+quotation marks if they obey the rules for KRC identifiers - tuples are
+recognised recursively to any depth and should be written in the usual way
+with square brackets and commas.  White space between data items is ignored,
+but other characters which do not form part of KRC constants are included
+in the output as data items in their own right;
+    values (c:x) = values x, ignorable c
+                 = getnum (digitval c) x, digit c
+                 = fixneg (values x), c = "-"
+                 = getstring [] x, c = quote
+                 = fixtuple [] (values x), c = "["
+                 = getid [c] x, letter c
+                 = c:values x
+    values [] = []
+    getnum n (c:x) = getnum (10 * n + digitval c) x, digit c
+                   = n:values (c:x)
+    getnum n [] = [n]
+    fixneg (a:x) = -a:x, number a
+    fixneg x = "-":x
+    getstring s (c:x) = concat (reverse s):values x, c = quote
+                      = getstring (c:s) x
+    getstring s [] = [s]
+    getid n (c:x) = getid (c:n) x, okid c
+                  = concat (reverse n):values (c:x)
+    getid n [] = [n]
+    ignorable = member [sp,nl,tab]
+    okid c = letter c | digit c | c = "_" | c = "'"
+    fixtuple t (a:x) = t:x, a = "]"
+                     = fixtuple t x, a = ","
+                     = fixtuple (t ++ [a]) x
+    fixtuple t [] = [t]

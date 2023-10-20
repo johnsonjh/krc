@@ -1,0 +1,2 @@
+f s = [s,nl,(explode s)1,quote,s,quote,decode 33]
+f"f s = [s,nl,(explode s)1,quote,s,quote,decode 33]"!

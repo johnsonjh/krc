@@ -1,0 +1,3 @@
+    alltrees 1 = [0]
+    alltrees n = {[a,b];i<-[1..n - 1];a<-alltrees i;b<-alltrees (n - i)}
+    output = {[i,")",nl,lay (alltrees i)];i<-[1..]}

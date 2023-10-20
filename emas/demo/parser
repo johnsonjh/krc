@@ -1,0 +1,73 @@
+    analyse :- the input function for a computer algebra package
+               D A Turner, October 1981
+    "analyse" takes a formula (as a string) and returns a tree (if
+    successful) or else the string "error".  The syntax accepted by
+    "analyse" is as follows:
+        EXP ::= EXP + EXP1 | EXP - EXP1 | EXP1
+        EXP1 ::= -EXP1 | EXP2
+        EXP2 ::= EXP2 * EXP3 | EXP2 / EXP3 | EXP3
+        EXP3 ::= EXP4 ** EXP3 | EXP4 
+        EXP4 ::= FUNCTION EXP4 | ( EXP ) | VAR | NUM
+        VAR ::= <any single letter>
+        NUM ::= <any sequence of digits>
+        FUNCTION ::= <as per the list "funs">
+    Note that infix operators are generally left-associative in the above
+    syntax except for "**" which is right-associative.
+    The function "analyse" will also accept implied multiplications
+    e.g.    ab(c-d)
+    is read as    a*b*(c-d);
+    analyse x = shunt [] [] (fixops (tokens (explode x)))
+    shunt :- uses the "railway siding" algorithm of Dijkstra
+              shunt operator_stack operand_stack token_list => tree;
+    shunt rators rands (a:x) = shunt rators (a:rands) x, operand a
+    shunt ("(":rators) rands (")":x) = shunt rators rands x
+    shunt rators rands ("(":x) = shunt ("(":rators) rands x
+    shunt (op:rators) rands (op':x) = shunt rators (push op rands) (op':x), displaced (prio op) (prio op')
+    shunt rators rands (op:x) = shunt (op:rators) rands x, operator op
+    shunt (op:rators) rands [] = shunt rators (push op rands) [], op \= "("
+    shunt [] [rand] [] = rand
+    shunt x y z = "error"
+    push "neg" (a:rands) = ["-",a]:rands
+    push op (a:rands) = [op,a]:rands, monop op
+    push op (b:a:rands) = [op,a,b]:rands
+    push op other = "error"
+    displaced prio1 prio2 = prio1 > prio2 | prio1 = prio2 & leftassoc prio1
+    operand a = letter a | number a
+    operator a = prio a > -1
+    monop a = a = "neg" | member funs a
+    prio :- defines the priorities of all the operators (and assigns
+         a priority of -1 to non-operators).  To add new operators
+         to the syntax, simply alter "prio";
+    prio x = 0, x = "+" | x = "-"
+           = 1, x = "neg"
+           = 2, x = "*" | x = "/"
+           = 3, x = "**"
+           = 4, member funs x
+           = -1
+    leftassoc prio = prio = 0 | prio = 2
+    funs :- to add new function symbols to the syntax, simply alter the
+          definition of "funs";
+    funs = ["sin","cos","tan","exp","log","sqrt"]
+    fixops :- inserts implied multiplication signs, also converts unary
+          minus to "neg" so the analyser can distinguish it from infix
+          minus (the analyser converts it back to "-" when building the
+          tree - see "push");
+    fixops ("-":x) = "neg":fixops' x
+    fixops x = fixops' x
+    fixops' (a:b:x) = a:"*":fixops' (b:x), (operand a | a = ")") & (operand b | b = "(" | member funs b)
+    fixops' (a:"-":x) = a:fixops' ("-":x), operand a | a = ")"
+                      = a:fixops' ("neg":x)
+    fixops' (a:x) = a:fixops' x
+    fixops' [] = []
+    tokens :- performs lexical analysis;
+    tokens (a:x) = tokens x, a = sp
+                 = collectnum (digitval a) x, digit a
+                 = collectname a x, letter a
+    tokens ("*":"*":x) = "**":tokens x
+    tokens (a:x) = a:tokens x
+    tokens [] = []
+    collectnum n (a:x) = collectnum (10 * n + digitval a) x, digit a
+    collectnum n x = n:tokens x
+    collectname n (a:x) = collectname (concat [n,a]) x, letter a
+    collectname n x = n:tokens x, member funs n
+                    = explode n ++ tokens x

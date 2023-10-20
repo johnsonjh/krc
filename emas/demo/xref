@@ -1,0 +1,23 @@
+    attach n (a:x) = attach (n + 1) x, a = nl
+                   = [a,[n]]:attach n x
+    attach n [] = []
+    attachlinenos x = attach 1 x
+    coalesce [] = []
+    coalesce ([a,nl]:[a,nl']:x) = coalesce ([a,nl ++ nl']:x)
+    coalesce ([a,nl]:x) = [a,sort nl]:coalesce x
+    getid n [] = [concat (reverse n)]
+    getid n (a:x) = getid (a:n) x, letter a | digit a | a = "'"
+                  = concat (reverse n):getids (a:x)
+    getids [] = []
+    getids (a:x) = nl:getids x, a = nl
+                 = getid [a] x, letter a
+                 = getids x
+    inserton f a [] = [a]
+    inserton f a (b:x) = a:b:x, f a <= f b
+                       = b:inserton f a x
+    layout ([a,nlist]:x) = a:" ":show nlist:nl:layout x
+    layout [] = []
+    name [id,no] = id
+    sorton f [] = []
+    sorton f (a:x) = inserton f a (sorton f x)
+    xref = layout.coalesce.sorton name.attachlinenos.getids.read

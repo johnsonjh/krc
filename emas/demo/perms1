@@ -1,0 +1,4 @@
+    inserts a [] = [[a]]
+    inserts a (b:x) = (a:b:x):map (cons b) (inserts a x)
+    perms [] = [[]]
+    perms (a:x) = {q;p<-perms x;q<-inserts a p}

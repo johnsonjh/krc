@@ -1,0 +1,12 @@
+    id x = x
+    mergeon f (a:x) (b:y) = a:mergeon f x (b:y), f a <= f b
+                          = b:mergeon f (a:x) y
+    mergeon f [] y = y
+    mergeon f x [] = x
+    sorton f [] = []
+    sorton f [a] = [a]
+    sorton f [a,b] = [a,b], f a <= f b
+                   = [b,a]
+    sorton f (a:x) = split f [] [a] x
+    split f x y (a:z) = split f y (a:x) z
+    split f x y [] = mergeon f (sorton f x) (sorton f y)

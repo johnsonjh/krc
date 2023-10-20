@@ -1,0 +1,9 @@
+    sort [] = []
+    sort [a] = [a]
+    sort x = split x [] []
+    split (a:x) y z = split x z (a:y)
+    split [] y z = merge (sort y) (sort z)
+    merge (a:x) (b:y) = a:merge x (b:y), a <= b
+                      = b:merge (a:x) y
+    merge [] y = y
+    merge x [] = x

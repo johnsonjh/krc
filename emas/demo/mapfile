@@ -1,0 +1,4 @@
+    diff = code "A" - code "a"
+    f x = decode (code x + diff), lowercase x
+        = x
+    p = map f.read
