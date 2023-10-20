@@ -70,5 +70,5 @@ uninstall:
 	rm -rf $(BINDIR)/krc $(LIBDIR) $(MANDIR)/krc.1
 
 clean:
-	@rm -f *.o *.s core
+	@rm -f krc *.o *.s core
 	make -C doc $@
