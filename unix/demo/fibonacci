@@ -3,7 +3,7 @@
             fibs is the list of fibonacci method by a faster method
             try: fibs 34?
             beware that fibs soon reaches integer overflow;
-            
+
     fib n = n, n < 2
           = fib (n - 1) + fib (n - 2)
 

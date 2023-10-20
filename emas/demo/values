@@ -1,4 +1,4 @@
-    values :- values takes a list of characters (for example as obtained by reading a file) 
+    values :- values takes a list of characters (for example as obtained by reading a file)
 and returns the list of KRC data items represented by it - the data items
 recognised include numbers, strings and tuples - strings need not have
 quotation marks if they obey the rules for KRC identifiers - tuples are

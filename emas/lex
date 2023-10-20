@@ -39,7 +39,7 @@ $( LET CH = RDCH()
    WHILE CH=' '|CH='*T' DO CH:= RDCH()
    IF CH='*N' RESULTIS EOL
    IF 'a'<=CH<='z'|'A'<=CH<='Z'|EXPECTFILE & ('0'<=CH<='9'|CH='.'|CH='#')
-   DO $( $( BUFCH(UPPERCASE->CASECONV(CH),CH) 
+   DO $( $( BUFCH(UPPERCASE->CASECONV(CH),CH)
             CH:=RDCH()
          $) REPEATWHILE 'a'<=CH<='z'|'A'<=CH<='Z'|'0'<=CH<='9'|CH='*''|CH='_'|EXPECTFILE &(CH='.'|CH='#')
          UNRDCH()
@@ -88,7 +88,7 @@ $( LET CH2 = RDCH()
    IF CH2='='
    DO $( IF CH='>' RESULTIS GE.SY
          IF CH='<' RESULTIS LE.SY
-         IF NOTCH(CH) RESULTIS NE.SY 
+         IF NOTCH(CH) RESULTIS NE.SY
       $)
    UNRDCH()
    IF CH='?'|CH='!' DO EXPFLAG:= TRUE

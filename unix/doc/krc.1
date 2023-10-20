@@ -69,7 +69,7 @@ optional comment followed by one or more \fIequations\fP, one per line.
 When you invoke krc, it loads a set of standard
 definitions called the \fIprelude\fP, then prints a welcome
 message followed by a prompt, \fBkrc>\fP.  You have now entered a KRC \fIsession\fP.
-In a session you can type commands, expressions to be evaluated, and 
+In a session you can type commands, expressions to be evaluated, and
 definitions to be entered in the current script.
 A new prompt appears as each task is completed, until you end the session.
 .SH COMMANDS
@@ -88,7 +88,7 @@ the system responds by displaying the definition associated with
 If the definition has more than one equation these are shown
 numbered, from \fB1\fP, the numbers are used when editing definitions.
 .PP
-You can display a section of the script, say from 
+You can display a section of the script, say from
 the definition of `foo' to `bar' by typing
 .br
 \ \ \ \ foo\ ..\ bar
@@ -106,23 +106,23 @@ Typing control-D also has this effect.
 Be aware that ending a session does not automatically save the current
 script, for that you must use \fB/save\fP (see below).
 .PP
-In the commands which follow `\fIname\fP' means 
+In the commands which follow `\fIname\fP' means
 one of the names defined in the current script;
 .PP
 Where it says `\fIname(s)\fP'
 you can put a name, several names separated by
-spaces, or a range 
+spaces, or a range
 \fIfoo\fB..\fIbar\fR which refers to definitions \fIfoo\fP through \fIbar\fP
 of the current script,
 or \fIfoo\fB..\fR which means from the definition of \fIfoo\fP
 to the end of the script.
 .PP
-Where it says `\fIpart(s)\fP', this refers to equation numbers 
+Where it says `\fIpart(s)\fP', this refers to equation numbers
 from a definition in the script, for deletion or reordering.
 .PP
 A \fIpart\fP can be a single number like \fB1\fP,
-a range like \fB2..4\fP, 
-something like \fB4..\fP, which means from 
+a range like \fB2..4\fP,
+something like \fB4..\fP, which means from
 equation \fB4\fP to the end of the definition;
 \fIpart(s)\fP means a list of these separated by spaces.
 .TP
@@ -130,7 +130,7 @@ equation \fB4\fP to the end of the definition;
 Deletes one or more definitions from the script.
 Shorthand:\ \fB/d\fP
 .br
-If no 
+If no
 \fInames\fP are supplied, it deletes the whole script (\fBbeware!\fP).
 .TP
 \fB/delete\fP \fIname\fP \fIpart(s)\fP
@@ -205,7 +205,7 @@ Enables the printing of memory usage information each time a
 garbage collection happens.
 .TP
 \fB/reset\fP
-Turns off reduction counting, garbage collection information 
+Turns off reduction counting, garbage collection information
 and object display (see below).
 .TP
 \fB/dic\fP
@@ -271,7 +271,7 @@ where you want to control layout.
 Note that `?' adds a trailing newline while `!' doesn't.
 .PP
 The reader may find it helpful to study the function \fBshow\fP defined in the
-prelude; 
+prelude;
 .RS
 \fBx?\fP
 .RE
@@ -333,7 +333,7 @@ on the right of the equation will refer to the formal parameter).
 .PP
 Names which appear at the head of an LHS, which to this point are
 `radix', `girls' and `sq', are known as \fItop-level names\fP and have the whole
-script as their scope, as do the names defined in the prelude.  (The scope of 
+script as their scope, as do the names defined in the prelude.  (The scope of
 a name is the region of text in which it can be used with the same meaning.)
 .PP
 Here is a function of two parameters
@@ -400,7 +400,7 @@ take2 (a:b:x) = [a,b]
 Note that ':' is right associative so `a:b:x' means `a:(b:x)'.
 .PP
 In summary, an LHS consists of the name being defined followed by zero
-or more formal parameters.  Each formal parameter can be 
+or more formal parameters.  Each formal parameter can be
 .RS
 a \fIname\fP like \fBx\fP or \fBheight\fP
 .br
@@ -423,7 +423,7 @@ If there is also a guard, that must evaluate to "TRUE".
 Where a definition has more than one equation they must all have the
 same number of formal parameters.  Notwithstanding this, it is possible
 in KRC to define functions which take a variable number of arguments,
-because the right hand sides can be of varying type. (Terminology \- 
+because the right hand sides can be of varying type. (Terminology \-
 the actual parameters of a function are also called its \fIarguments\fP.)
 .PP
 KRC supports the interactive development of scripts.
@@ -443,7 +443,7 @@ name :-;
 .RE
 .PP
 Another way of proceeding is to use an editor to create the script and
-then start a krc session with it as the file.  The 
+then start a krc session with it as the file.  The
 KRC system was designed to allow it to be used without a separate editor (back
 in 1980 screen editors like \fBvi\fP and \fBemacs\fP were not widely
 available as they are now).
@@ -462,8 +462,8 @@ as its argument, (iv) returned by a function as result.
 .PP
 There is no static type system \- values of different types can be freely mixed, for
 example as elements of a list and a function can accept
-arguments of more than one type and return results of different 
-types for different inputs.  
+arguments of more than one type and return results of different
+types for different inputs.
 Type errors, e.g. trying to multiply two strings, are detected at
 run time.  Languages of this kind (LISP is another example) are often
 called `typeless', but \fIdynamically typed\fP is more accurate.
@@ -502,7 +502,7 @@ A character is just a string of length 1, e.g. "a"
 (you cannot write this as \'a\', that would not be recognised).
 .PP
 The prelude function `explode' converts a string into
-a list of characters, e.g. 
+a list of characters, e.g.
 .RS
 \fBkrc>\fP explode "hello"?
 .br
@@ -655,7 +655,7 @@ and in formal parameters).
 The operators \fB:\fP (prefix) and \fB++\fP
 (append) have been discussed earlier, in the section on DATA TYPES.
 The expression \fBx -- y\fP returns a list of the elements of \fBx\fP without
-those that appear in \fBy\fP, the exact definition is given by the 
+those that appear in \fBy\fP, the exact definition is given by the
 prelude function \fBlistdiff\fP.
 .PP
 The logical operators \fB|\fP, \fB&\fP do not evaluate their second operand
@@ -683,7 +683,7 @@ on any pair of values, returning "TRUE" or "FALSE". Values of different types
 are always unequal.  Two lists count as equal if and only if they are of the
 same length and (recursively for sublists) corresponding elements are equal.
 .PP
-Equality tests between functions give unpredictable results and should 
+Equality tests between functions give unpredictable results and should
 not be used.
 (Example: `\fBmap\ ==\ map\fP' has value "TRUE" but
 `\fBmap\ abs\ ==\ map\ abs\fP' is "FALSE".)
@@ -809,7 +809,7 @@ The standard prelude is usually at \fB/usr/lib/krc/prelude\fP but may be placed
 elsewhere by the installer. To view the standard prelude in a KRC session, say
 "\fB/help prelude\fP".
 .PP
-Another library in place of the standard prelude can be specified 
+Another library in place of the standard prelude can be specified
 on the command line when KRC is invoked by the option \fB-l \fIlib\fR.
 If you invoke KRC with option \fB-n\fP, no prelude is loaded.\"\fBchar__ chr__ explode__ function__ implode__ list__ number__ ord__ printwidth__ read__ seq__ string__ write__\fP
 .PP

@@ -6,7 +6,7 @@
         EXP ::= EXP + EXP1 | EXP - EXP1 | EXP1
         EXP1 ::= -EXP1 | EXP2
         EXP2 ::= EXP2 * EXP3 | EXP2 / EXP3 | EXP3
-        EXP3 ::= EXP4 ** EXP3 | EXP4 
+        EXP3 ::= EXP4 ** EXP3 | EXP4
         EXP4 ::= FUNCTION EXP4 | ( EXP ) | VAR | NUM
         VAR ::= <any single letter>
         NUM ::= <any sequence of digits>

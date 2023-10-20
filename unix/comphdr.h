@@ -60,7 +60,7 @@ typedef enum {
    // OTHER OPERATORS
    DOTDOT_OP=19, COMMADOTDOT_OP=20, ZF_OP=21, GENERATOR=22,
    LENGTH_OP=23, NEG_OP=24, NOT_OP=25,
-   QUOTE_OP=26    //USED TO CONVERT AN INFIX INTO A FUNCTION 
+   QUOTE_OP=26    //USED TO CONVERT AN INFIX INTO A FUNCTION
 } OPERATOR;
 
 //INTERNAL REPRESENTATION OF KRC EQUATIONS
@@ -95,7 +95,7 @@ typedef enum {
        MATCHPAIR_C=8, STOP_C=9, LINENO_C=10, CALL_C=11,
        CONTINUE_INFIX_C=12, FORMZF_C=13, CONT_GENERATOR_C=14,
        //THE LINENO COMMAND HAS NO EFFECT AT EXECUTION TIME, IT IS USED
-       //TO GIVE AN EQUATION A NON STANDARD LINE NUMBER FOR INSERTION 
+       //TO GIVE AN EQUATION A NON STANDARD LINE NUMBER FOR INSERTION
        //PURPOSES
 } INSTRUCTION;
 
@@ -120,8 +120,8 @@ typedef enum {
 //      \
 //                     >  >=  ==  \=  <=  <     continued relations allowed
 //                            +  -              left associative
-//      -      
-//                          *  /  %             left associative 
+//      -
+//                          *  /  %             left associative
 //                           **  .              (** is right associative)
 //      #
 //Notes - "%" is remainder operator, "." is functional composition and "#" takes the length of lists

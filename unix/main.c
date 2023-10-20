@@ -127,7 +127,7 @@ VOID ESCAPETONEXTCOMMAND()
       DO {  IF ATCOUNT DO OUTSTATS();
 	    CLEARMEMORY(); //IN CASE SOME POINTERS HAVE BEEN LEFT REVERSED
 	    EVALUATING=FALSE;  }
-      IF HOLDSCRIPT!=NIL 
+      IF HOLDSCRIPT!=NIL
       DO {  SCRIPT=HOLDSCRIPT, HOLDSCRIPT=NIL;
 	    CHECK_HITS(); }
       INIT_CODEV();
@@ -308,7 +308,7 @@ INITIALISE()
 //   NIL )
 STATIC VOID
 ENTERARGV(int USERARGC, LIST USERARGV)
-{  
+{
    ATOM A=MKATOM("argv");
    LIST CODE=CONS((LIST)FORMLIST_C,
 		  CONS((LIST)USERARGC,
@@ -430,7 +430,7 @@ FINDCHANNEL(char *F)
 // COMMAND INTERPRETER
 // EACH COMMAND IS TERMINATED BY A NEWLINE
 // <COMMAND>::= /<EMPTY> |    (DISPLAYS WHOLE SCRIPT)
-//              /DELETE <THINGY>* |   
+//              /DELETE <THINGY>* |
 //                  (IF NO <THINGY>'S ARE SPECIFIED IT DELETES WHOLE SCRIPT)
 //              /DELETE <NAME> <PART>* |
 //              /REORDER <THINGY>* |
@@ -590,7 +590,7 @@ DISPLAYALL(BOOL DOUBLESPACING)  // "SCRIPT" IS A LIST OF ALL USER DEFINED
       UNTIL P==NIL DO { UNLESS PRIMITIVE((ATOM)HD(P))
                         //don't display builtin fns (relevant only in /openlib)
                         DO DISPLAY((ATOM)HD(P),FALSE,FALSE);
-                        P=TL(P);  
+                        P=TL(P);
                         IF DOUBLESPACING && P != NIL
                         //extra line between groups
                         DO NEWLINE(); }
@@ -646,7 +646,7 @@ SAVECOM()
       IF SCRIPT==NIL
       DO {  WRITES("Cannot save empty script\n");
             RETURN  }
-   {  
+   {
       FILE *OUT = FINDOUTPUT("T#SCRIPT");
       SELECTOUTPUT(OUT);
       DISPLAYALL(TRUE);
@@ -722,7 +722,7 @@ GETFILE(char *FILENAME)
 	    ERRORFLAG=TRUE;
 	    BREAK;
          }
-         IF HAVE(EOL) DO LOOP;  
+         IF HAVE(EOL) DO LOOP;
          IF HD(TOKENS)==ENDSTREAMCH
          DO BREAK
          TEST COMMENTFLAG
@@ -792,7 +792,7 @@ LIBCOM()
       TEST LIBSCRIPT==NIL
       THEN WRITES("library = empty\n");
       OR SCRIPTLIST(LIBSCRIPT);  }
- 
+
 STATIC VOID
 CLEARCOM()
    {  CHECK(EOL);
@@ -942,7 +942,7 @@ NEWEQUATION()
                        BREAK  }
                  EQNS=TL(EQNS);
               } REPEAT
-           } 
+           }
       OR {  LIST EQNS = TL(VAL(SUBJECT));  //NUMBERED EQN
             WORD N = 0;
             IF EQNO % 100!=0 || EQNO==0 //IF EQN HAS NON STANDARD LINENO
@@ -964,7 +964,7 @@ NEWEQUATION()
                      BREAK  }
                EQNS=TL(EQNS);
             } REPEAT
-         } 
+         }
       SAVED=FALSE;
    }  }  }
 
@@ -1082,7 +1082,7 @@ REORDERCOM()
            DISPLAY(THE_ID,TRUE,FALSE);
            SAVED=FALSE;
            CLEARMEMORY();
-        }  } 
+        }  }
    OR SYNTAX();
 }
 
@@ -1204,7 +1204,7 @@ DELETECOM()
             TL(VAL(NAME))=NEW;
             IF NEW==NIL &&
                TL(HD(VAL(NAME)))==NIL   //COMMENT FIELD
-            DO REMOVE(NAME);  } 
+            DO REMOVE(NAME);  }
       WRITEF("%" W " equations deleted\n",DELS);
       IF DELS>0 DO {  SAVED=FALSE; CLEARMEMORY();  }
    }  }

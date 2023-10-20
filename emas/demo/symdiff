@@ -7,7 +7,7 @@
         EXP ::= EXP + EXP1 | EXP - EXP1 | EXP1
         EXP1 ::= -EXP1 | EXP2
         EXP2 ::= EXP2 * EXP3 | EXP2 / EXP3 | EXP3
-        EXP3 ::= EXP4 ** EXP3 | EXP4 
+        EXP3 ::= EXP4 ** EXP3 | EXP4
         EXP4 ::= FUNCTION EXP4 | ( EXP ) | VAR | NUM
         VAR ::= <any single letter>
         NUM ::= <any sequence of digits>
@@ -118,7 +118,7 @@
     ifplus (op:rands) = "TRUE", op = "+"
                       = "FALSE"
     ifplus a = "FALSE"
-    mult :- The mult 'contractor' function performs all numerical 
+    mult :- The mult 'contractor' function performs all numerical
          and algebriac reductions in building the internal form.
          "*" is an n-ary operator;
     mult a b = a * b, number a & number b
@@ -148,7 +148,7 @@
     ifmult (op:rands) = "TRUE", op = "*"
                       = "FALSE"
     ifmult a = "FALSE"
-    power :- The power 'contractor' function performs all 
+    power :- The power 'contractor' function performs all
           algebriac reductions in building the internal
           form. "^" is a binary operator. Mathematically
           undefined expressions are correctly handled;

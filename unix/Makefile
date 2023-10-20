@@ -29,8 +29,7 @@ HEAPSIZE?=128000		# Default heap size if unspecified
 # reduces code size from 75K to 63K
 
 CFLAGS+=-g -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast \
-	-O2 -fno-omit-frame-pointer -fcommon \
- 	-DLINENOISE \
+	-O2 -fno-omit-frame-pointer -fcommon -DLINENOISE \
 	-DLIBDIR='$(LIBDIR)' -DHEAPSIZE=$(HEAPSIZE)
 
 SRCS= main.c reducer.c compiler.c lex.c listpack.c bcpl.c emas.c \
@@ -67,7 +66,7 @@ install: krc krclib/prelude krclib/lib1981 doc/krc.1
 	cp -P krclib/help/* $(LIBDIR)/help  #krclib/help contains symbolic links
 	install -c -m 644 doc/krc.1 $(MANDIR)
 
-uninstall: 
+uninstall:
 	rm -rf $(BINDIR)/krc $(LIBDIR) $(MANDIR)/krc.1
 
 clean:

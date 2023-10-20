@@ -42,7 +42,7 @@ MANIFEST $( ALPHA=-2; INDIR=-1; QUOTE=0   || QUASI OPERATORS
             MINUS.OP=13;TIMES.OP=14;DIV.OP=15;REM.OP=16;EXP.OP=17;DOT.OP=18
             DOTDOT.OP=19; COMMADOTDOT.OP=20; ZF.OP=21; GENERATOR=22
             LENGTH.OP=23; NEG.OP=24; NOT.OP=25
-            QUOTE.OP=26    ||USED TO CONVERT AN INFIX INTO A FUNCTION 
+            QUOTE.OP=26    ||USED TO CONVERT AN INFIX INTO A FUNCTION
          $)
 
 ||INTERNAL REPRESENTATION OF KRC EQUATIONS
@@ -76,7 +76,7 @@ MANIFEST $( LOAD.C=0; LOADARG.C=1; APPLY.C=2; APPLYINFIX.C=3
             MATCHPAIR.C=8; STOP.C=9; LINENO.C=10; CALL.C=11
             CONTINUE.INFIX.C=12; FORMZF.C=13; CONT.GENERATOR.C=14
        ||THE LINENO COMMAND HAS NO EFFECT AT EXECUTION TIME, IT IS USED
-       ||TO GIVE AN EQUATION A NON STANDARD LINE NUMBER FOR INSERTION 
+       ||TO GIVE AN EQUATION A NON STANDARD LINE NUMBER FOR INSERTION
        ||PURPOSES
          $)
 
@@ -98,11 +98,11 @@ MANIFEST $( LOAD.C=0; LOADARG.C=1; APPLY.C=2; APPLYINFIX.C=3
 ||                          :  ++  --           right associative
 ||                             |
 ||                             &
-||       \     
+||       \
 ||                     >  >=  =  \=  <=  <      continued relations allowed
 ||                            +  -              left associative
-||     +  -      
-||                          *  /  %             left associative 
+||     +  -
+||                          *  /  %             left associative
 ||                           **  .              (** is right associative)
 ||      #
 ||Notes - "%" is remainder operator, "." is functional composition and "#" takes the length of lists

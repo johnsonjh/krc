@@ -45,7 +45,7 @@ BE $( STATIC $( LEV=?; LL=? $)
             DO $( IF ATCOUNT DO OUTSTATS()
                   CLEARMEMORY() ||IN CASE SOME POINTERS HAVE BEEN LEFT REVERSED
                   EVALUATING:=FALSE  $)
-            IF HOLDSCRIPT\=NIL 
+            IF HOLDSCRIPT\=NIL
             DO $( SCRIPT,HOLDSCRIPT := HOLDSCRIPT,NIL
                   CHECK.HITS() $)
             ENVP,CODEP:= -1,-1
@@ -179,7 +179,7 @@ BE $( EXTERNAL $( FILES  $)
 AND ANALYSECOM()  ||EMAS SPECIFIC
 BE $( EXTERNAL $( ANALYSE  $)
       TEST HAVEID() & HAVE(EOL)
-      THEN  $( MAKEPARAM(1,PRINTNAME(THE.ID)) 
+      THEN  $( MAKEPARAM(1,PRINTNAME(THE.ID))
                ANALYSE(DESCRIPTOR(),PARAMV<<2)  $)
       OR SYNTAX()
    $)
@@ -209,7 +209,7 @@ $)
 || COMMAND INTERPRETER
 || EACH COMMAND IS TERMINATED BY A NEWLINE
 || <COMMAND>::= /<EMPTY> |    (DISPLAYS WHOLE SCRIPT)
-||              /DELETE <THINGY>* |   
+||              /DELETE <THINGY>* |
 ||                  (IF NO <THINGY>'S SPECIFIED DELETES WHOLE SCRIPT)
 ||              /DELETE <NAME> <PART>* |
 ||              /REORDER <THINGY>* |
@@ -234,7 +234,7 @@ $)
 
 AND COMMAND()
 BE $( PROMPT(">") || ON EMAS PROMPTS REMAIN IN EFFECT UNTIL CANCELLED
-      READLINE() 
+      READLINE()
       SUPPRESSPROMPTS()  || CANCEL PROMPT (IN CASE COMMAND READS DATA)
       TEST HAVE('/')
       THEN TEST HAVE(EOL)
@@ -273,7 +273,7 @@ BE TEST HAVEID()
                 TEST B=0 THEN SYNTAX()
                 OR X:= EXTRACT(A,B)
                 UNTIL X=NIL
-                DO $( DISPLAY(HD!X,FALSE,FALSE) 
+                DO $( DISPLAY(HD!X,FALSE,FALSE)
                       X:=TL!X  $)  $) ||could insert extra line here between groups
         OR SYNTAX()
    OR SYNTAX()
@@ -312,7 +312,7 @@ AND RESETCOM()
 BE ATOBJECT,ATGC,ATCOUNT:=FALSE,FALSE,FALSE
 
 AND GCCOM()
-BE $( ATGC:=TRUE 
+BE $( ATGC:=TRUE
       FORCE.GC()  $)
 
 AND COUNTCOM()
@@ -442,7 +442,7 @@ BE $( CHECK(EOL)
       TEST LIBSCRIPT=NIL
       THEN WRITES("library = empty*N")
       OR SCRIPTLIST(LIBSCRIPT)  $)
- 
+
 AND CLEARCOM()
 BE $( CHECK(EOL)
       IF ERRORFLAG RETURN
@@ -495,8 +495,8 @@ BE $( LET X,Y,Z = NIL,NIL,NIL
          UNLESS DUPS=NIL
          DO $( WRITES("/rename illegal because of conflicting uses of ")
                UNTIL DUPS=NIL
-               DO  $( WRITES(PRINTNAME(HD!DUPS)) 
-                      WRCH(' ') 
+               DO  $( WRITES(PRINTNAME(HD!DUPS))
+                      WRCH(' ')
                       DUPS:= TL!DUPS  $)
                NEWLINE()
                RETURN  $)  $)
@@ -580,7 +580,7 @@ BE $( LET EQNO = -1
                        BREAK  $)
                  EQNS:=TL!EQNS
               $) REPEAT
-           $) 
+           $)
       OR $( LET EQNS = TL!(VAL!SUBJECT)  ||NUMBERED EQN
             LET N = 0
             IF EQNO REM 100\=0 | EQNO=0 ||IF EQN HAS NON STANDARD LINENO
@@ -602,7 +602,7 @@ BE $( LET EQNO = -1
                      BREAK  $)
                EQNS:=TL!EQNS
             $) REPEAT
-         $) 
+         $)
       SAVED:=FALSE
    $) $) $)
 
@@ -707,7 +707,7 @@ BE TEST ISID(HD!TOKENS) & (ISID(HD!(TL!TOKENS)) | HD!(TL!TOKENS)=DOTDOT.SY)
            DISPLAY(THE.ID,TRUE,FALSE)
            SAVED:=FALSE
            CLEARMEMORY()
-        $) $) 
+        $) $)
    OR SYNTAX()
 
 AND SCRIPTREORDER()
@@ -817,7 +817,7 @@ BE $( LET DLIST = NIL
             IF NEW=NIL &
                TL!(HD!(VAL!NAME))=NIL   ||COMMENT FIELD
             DO REMOVE(NAME)
-         $) 
+         $)
       WRITEF("%N equations deleted *N",DELS)
       IF DELS>0 DO $( SAVED:= FALSE ; CLEARMEMORY()  $)
    $) $)

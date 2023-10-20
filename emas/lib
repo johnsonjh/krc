@@ -190,7 +190,7 @@
 
     quote = decode 34
 
-    read :- takes a file or device name and returns a list of 
+    read :- takes a file or device name and returns a list of
 
             characters (defined in machine code);
 

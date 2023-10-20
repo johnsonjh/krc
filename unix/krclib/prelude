@@ -12,7 +12,7 @@
     and :- applied to a list of truthvalues, takes the logical conjunction;
     and = foldr '&' "TRUE"
 
-    any :- applied to a predicate and a list returns "TRUE" if the 
+    any :- applied to a predicate and a list returns "TRUE" if the
            predicate is "TRUE" for at least one element of the list;
     any f = or . map f
 
@@ -352,7 +352,7 @@
             (defined in machine code);
     write = write__
 
-    zip :- applied to a list of lists, returns the matrix transpose 
+    zip :- applied to a list of lists, returns the matrix transpose
            i.e. rows and columns are interchanged.  Example
                zip [[1,2,3],[4,5,6]] = [[1,4],[2,5],[3,6]]
            also accepts upper triangular matrices, e.g.
@@ -367,5 +367,5 @@
                n columns. Taking a 3-ary function f as example
                zipwith f [x,y,z]
                = [f (x 0) (y 0) (z 0), f (x 1) (y 1) (z 1), ... ];
-                  
+
     zipwith f xss = map (uncurry f) (zip xss)

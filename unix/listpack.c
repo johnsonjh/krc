@@ -36,7 +36,7 @@ static int ATOMSPACE;      //MAX NUMBER OF ATOMS WHICH CAN BE STORED
 
 // Impossible value of pointer or integer used as flag during GC.
 #define GONETO ((LIST)(1ULL<<(sizeof(LIST)*8-1))) // just top bit set
- 
+
 static LIST CONSBASE, CONSLIMIT, CONSP, OTHERBASE;
 static LIST *STACKBASE;
 //static struct ATOM *ATOMBASE;
@@ -51,7 +51,7 @@ extern char *USERLIB;
 BOOL COLLECTING = FALSE;
 #endif
 
-static ATOM HASHV[128]; 
+static ATOM HASHV[128];
 
 static char BUFFER[ATOMSIZE+1]; static WORD BUFP=0;
 
@@ -74,8 +74,8 @@ main(int argc, char **argv)
       // Detect when we are run from a #! script on a system that
       // passes all parameters from the #! line as a single one.
       // We get: argv[0]="/path/to/krc
-      //         argv[1]="-n -e primes?" 
-      //         argv[2]="path/to/script" 
+      //         argv[1]="-n -e primes?"
+      //         argv[2]="path/to/script"
       //         argv[3..]=args passed to the script
       IF argc>1 && argv[1][0]=='-' && strchr(argv[1], ' ') != NULL DO {
 	 int nspaces=0; char *cp;
@@ -180,7 +180,7 @@ CONS(LIST X, LIST Y)
 {
    IF CONSP>=(CONSLIMIT-1) DO GC();
    HD(CONSP)=X,TL(CONSP)=Y,CONSP=CONSP+1;
-   RESULTIS CONSP-1; 
+   RESULTIS CONSP-1;
 }
 
 #include <setjmp.h>
@@ -246,7 +246,7 @@ SHOW("bases");
             DO {  COPY((LIST *)&(VAL(A)));
                   A=LINK(A);  }  }  }
 SHOW("atoms");
-         
+
       // Runtime detection of stack growth direction
       TEST STACKBASE < STACKEND
       THEN
@@ -518,20 +518,20 @@ MEMBER(LIST X, LIST A)
    DO X = TL(X);
    RESULTIS X!=NIL;  }
 
-LIST 
+LIST
 APPEND(LIST X, LIST Y) { RESULTIS SHUNT(SHUNT(X,NIL),Y); }
 
-LIST 
+LIST
 REVERSE(LIST X) { RESULTIS SHUNT(X,NIL); }
 
-LIST 
+LIST
 SHUNT(LIST X, LIST Y)
 {  UNTIL X==NIL
    DO {  Y=CONS(HD(X),Y);
          X=TL(X);  }
    RESULTIS Y;  }
 
-LIST 
+LIST
 SUB1(LIST X, ATOM A)   //DESTRUCTIVELY REMOVES A FROM X (IF PRESENT)
 {   IF X==NIL DO RESULTIS NIL;
     IF HD(X)==(LIST)A DO RESULTIS TL(X);
@@ -552,7 +552,7 @@ EQUAL(LIST X, LIST Y)
   } while(1);
 }
 
-LIST 
+LIST
 ELEM(LIST X, WORD N)
 {  UNTIL N==1 DO X=TL(X),N=N-1;
    RESULTIS HD(X);  }

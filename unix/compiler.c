@@ -124,7 +124,7 @@ PRINTEXP(LIST E, WORD N)    // N IS THE PRIORITY LEVEL
    THEN WRITES(PRINTNAME((ATOM)E)); OR
    TEST ISNUM(E)
    THEN { WORD X=GETNUM(E);
-          TEST X<0 && N>5 
+          TEST X<0 && N>5
           THEN { WRCH('('); WRITEN(X); WRCH(')'); }
           OR WRITEN(X); }
    OR {  UNLESS ISCONS(E)
@@ -290,13 +290,13 @@ DISPLAY(ATOM ID, BOOL WITHNOS, BOOL DOUBLESPACING)
             UNTIL C==NIL
             DO {  WRITES(PRINTNAME((ATOM)HD(C)));
                   C = TL(C);
-                  UNLESS C==NIL 
+                  UNLESS C==NIL
                   DO {  NEWLINE();
                         IF DOUBLESPACING DO NEWLINE(); }
                }
             WRITES(";\n");
             IF DOUBLESPACING DO NEWLINE();  }
-      IF COMMENT!=NIL && N==1 && HD(TL(HD(EQNS)))==(LIST)CALL_C 
+      IF COMMENT!=NIL && N==1 && HD(TL(HD(EQNS)))==(LIST)CALL_C
 	 DO RETURN
       FOR (I=1; I<=N; I++)
          {  TEST WITHNOS && (N>1 || COMMENT!=NIL)
@@ -405,7 +405,7 @@ DISPLAYRHS(LIST LHS, WORD NARGS, LIST CODE)
 }
 
 LIST
-PROFILE(LIST EQN) //EXTRACTS THAT PART OF THE CODE WHICH 
+PROFILE(LIST EQN) //EXTRACTS THAT PART OF THE CODE WHICH
                        //DETERMINES WHICH CASES THIS EQUATION APPLIES TO
 {  LIST CODE=TL(EQN);
    IF HD(CODE)==(LIST)LINENO_C

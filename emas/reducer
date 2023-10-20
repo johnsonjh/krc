@@ -202,7 +202,7 @@ BE $( WRCH:=TRUEWRCH
       WRCH:=TRUEWRCH
       WRITES("*N****undefined expression*****N  ")
       PRINTEXP(E,0)
-      ||COULD INSERT MORE DETAILED DIAGNOSTICS HERE, 
+      ||COULD INSERT MORE DETAILED DIAGNOSTICS HERE,
       ||DEPENDING ON NATURE OF HD!E, FOR EXAMPLE:
       IF ISCONS(E) &(HD!E=COLON.OP|HD!E=APPEND.OP)
       DO WRITES("*N  (non-list encountered where list expected)")
@@ -246,7 +246,7 @@ $( IF ARGP+20>ARGMAX DO SPACE.ERROR()
                                      RETURN  $)
                                !ARGP:=CONS(!ARGP,!(ARGP+1))
                                ENDCASE
-            CASE CONTINUE.INFIX.C: 
+            CASE CONTINUE.INFIX.C:
                        !(ARGP-1):=CONS(HD!CODE,CONS(!(ARGP-1),!ARGP))
                        CODE:=TL!CODE
                        ENDCASE
@@ -327,7 +327,7 @@ BE $( !ARG:=REDUCE(!ARG)
    $)
 
 AND FUNCTIONP(E)
-BE $( !ARG:=REDUCE(!ARG) 
+BE $( !ARG:=REDUCE(!ARG)
       HD!E:=INDIR
       TL!E:=ISFUN(!ARG)->TRUTH,FALSITY
    $)
@@ -337,7 +337,7 @@ AND ISFUN(X) = ISATOM(X) | ISCONS(X) & QUOTE\=HD!X\=COLON.OP
 AND CHAR(E)
 BE $( !ARG:=REDUCE(!ARG)
       HD!E,TL!E:=INDIR,
-                 ISCONS(!ARG) & HD!(!ARG)=QUOTE & 
+                 ISCONS(!ARG) & HD!(!ARG)=QUOTE &
                  GETBYTE(PRINTNAME(TL!(!ARG)),0)=1 -> TRUTH, FALSITY
    $)
 
@@ -565,7 +565,7 @@ $( STATIC $( M=0; N=0  $)
                       $( LET HOLD=HD!S
                          NARGS:=NARGS-1
                          E,TL!HOLD:=HD!(TL!S),CONS(TL!(TL!S),TL!HOLD)
-                         HD!S,S:=DOT.OP,HOLD  
+                         HD!S,S:=DOT.OP,HOLD
                          REDS:=REDS+1
                          LOOP  $)
             CASE EQ.OP:
@@ -680,7 +680,7 @@ $( STATIC $( M=0; N=0  $)
    RESULTIS E
 $)
 
-AND SUBSTITUTE(ACTUAL,FORMAL,EXP) = 
+AND SUBSTITUTE(ACTUAL,FORMAL,EXP) =
      EXP=FORMAL -> ACTUAL,
      \ISCONS(EXP) | HD!EXP=QUOTE | BINDS(FORMAL,HD!EXP) -> EXP,
      VALOF $( LET H=SUBSTITUTE(ACTUAL,FORMAL,HD!EXP)

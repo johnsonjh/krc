@@ -20,14 +20,6 @@ typedef int WORD;	// 32-bit value.
 
 #endif
 
-// Trap broken compiler versions here, as it is included by everything
-// Definitely doesn't work with gcc-4.9.[012]
-#if __GNUC__ == 4 && __GNUC_MINOR__ == 9
-// && __GNUC_PATCHLEVEL__  < 3
-# error "KRC is broken when compiled with GCC 4.9. Earlier GCCs, clang and TinyC work.".
-#endif
-
-
 /* transliterate BCPL into C */
 #define STATIC static
 typedef void VOID;	// Not BCPL but...

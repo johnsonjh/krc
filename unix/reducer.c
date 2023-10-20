@@ -44,7 +44,7 @@ INIT_ARGSPACE(VOID)
    }
    ARG=ARGSPACE, ARGP=ARG-1;
 }
-	
+
 // Sentinel value (impossible pointer)
 #define ENDOFSTACK (-4)
 
@@ -205,10 +205,10 @@ PRINTVAL(LIST E, BOOL FORMAT)
                         //NAME OF FUNCTION
    }
 
-VOID 
+VOID
 PRINTATOM(ATOM A,BOOL FORMAT)
 {  TEST FORMAT
-   THEN 
+   THEN
         { int I; //DT 2015
           WRCH('"');
           FOR (I=1; I<=LEN(A); I++) SHOWCH(NAME(A)[I]);
@@ -263,7 +263,7 @@ BADEXP(LIST E) //CALLED FOR ALL EVALUATION ERRORS
       CLOSECHANNELS();
       WRITES("\n**undefined expression**\n  ");
       PRINTEXP(E,0);
-      //COULD INSERT MORE DETAILED DIAGNOSTICS HERE, 
+      //COULD INSERT MORE DETAILED DIAGNOSTICS HERE,
       //DEPENDING ON NATURE OF HD!E, FOR EXAMPLE:
       IF ISCONS(E) && (HD(E)==(LIST)COLON_OP||HD(E)==(LIST)APPEND_OP)
       DO WRITES("\n  (non-list encountered where list expected)");
@@ -328,7 +328,7 @@ OBEY(LIST EQNS,LIST E) //TRANSFORM A PIECE OF GRAPH, E, IN ACCORDANCE
                                      RETURN  }
                                *ARGP=CONS(*ARGP,*(ARGP+1));
                                ENDCASE
-            CASE CONTINUE_INFIX_C: 
+            CASE CONTINUE_INFIX_C:
                        *(ARGP-1)=CONS(HD(CODE),CONS(*(ARGP-1),*ARGP));
                        CODE=TL(CODE);
                        ENDCASE
@@ -536,7 +536,7 @@ READ(LIST E)
       HD(E)=(LIST)INDIR,TL(E)=CONS((LIST)READFN,TL(E));
    {  LIST *X = &(TL(E)); WORD C=RDCH();
       // Read one character
-      IF C!=EOF 
+      IF C!=EOF
       DO {  char c=C;
 	    *X=CONS((LIST)COLON_OP, CONS(
 		         CONS((LIST)QUOTE,(LIST)MKATOMN(&c,1)), *X));
