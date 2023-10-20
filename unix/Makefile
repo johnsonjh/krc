@@ -29,7 +29,7 @@ HEAPSIZE?=128000		# Default heap size if unspecified
 # reduces code size from 75K to 63K
 
 CFLAGS+=-g -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast \
-	-O2 -fno-omit-frame-pointer \
+	-O2 -fno-omit-frame-pointer -fcommon \
  	-DLINENOISE \
 	-DLIBDIR='$(LIBDIR)' -DHEAPSIZE=$(HEAPSIZE)
 
